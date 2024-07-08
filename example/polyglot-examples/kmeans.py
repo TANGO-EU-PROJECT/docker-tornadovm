@@ -27,5 +27,28 @@ print("Hello World from Python!")
 
 # Set numPoints, numClusters
 kmeans.setInputs(1048576, 3)
-resultJava=kmeans.runWithJava()
-resultGPU=kmeans.runWithGPU()
+resultJava = kmeans.runWithJava()
+resultGPU = kmeans.runWithGPU()
+
+# Function to compare two matrices
+def validate_matrices(matrix1, matrix2):
+    rows1 = matrix1.getNumRows()
+    cols1 = matrix1.getNumColumns()
+    rows2 = matrix2.getNumRows()
+    cols2 = matrix2.getNumColumns()
+
+    if rows1 != rows2 or cols1 != cols2:
+        print("................ [FAIL]: Matrices have different dimensions")
+        return
+
+    for i in range(rows1):
+        for j in range(cols1):
+            if matrix1.get(i, j) != matrix2.get(i, j):
+                print(f"................ [FAIL]: Matrices differ at ({i}, {j})")
+                return
+
+    print("................ [PASS]: Matrices are identical")
+
+# Accessing the results from Java methods and comparing them
+validate_matrices(resultJava, resultGPU)
+
