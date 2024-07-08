@@ -38,16 +38,16 @@ def validate_matrices(matrix1, matrix2):
     cols2 = matrix2.getNumColumns()
 
     if rows1 != rows2 or cols1 != cols2:
-        print("................ [FAIL]: Matrices have different dimensions")
+        print("[TornadoVM_EDAE_I001]................ [FAIL]: Matrices have different dimensions")
         return
 
     for i in range(rows1):
         for j in range(cols1):
             if matrix1.get(i, j) != matrix2.get(i, j):
-                print(f"................ [FAIL]: Matrices differ at ({i}, {j})")
+                print(f"[TornadoVM_EDAE_I001]................ [FAIL]: Matrices differ at ({i}, {j})")
                 return
 
-    print("................ [PASS]: Matrices are identical")
+    print("[TornadoVM_EDAE_I001]................ [PASS]: Matrices are identical")
 
 # Accessing the results from Java methods and comparing them
 validate_matrices(resultJava, resultGPU)
