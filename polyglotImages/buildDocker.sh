@@ -5,9 +5,9 @@ TAG_VERSION=tango
 function buildDockerImage() {
     IMAGE=$1
     FILE=$2
-    docker build -t $IMAGE -f $FILE .
+    docker build --no-cache -t $IMAGE -f $FILE .
     docker tag $IMAGE beehivelab/$IMAGE:$TAG_VERSION
-    docker tag $IMAGE beehivelab/$IMAGE:latest
+    #docker tag $IMAGE beehivelab/$IMAGE:latest
 }
 
 
