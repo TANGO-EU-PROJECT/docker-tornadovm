@@ -18,21 +18,21 @@ export TORNADO_DOCKER_SCRIPT="<path>/docker-tornadovm"
 ## 3. Run TornadoVM profiler unit-tests
 - If you have Intel (CPU/GPU) devices on your system, use the following script:
 ```bash
-${TORNADO_DOCKER_SCRIPT}/dynamic-intelligent-execution-intel.sh --test
+${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution_intel.sh --test
 ```
 
 - If you have NVIDIA GPU devices on your system, use the following script:
 ```bash
-${TORNADO_DOCKER_SCRIPT}/dynamic-intelligent-execution-nvidia.sh --test
+${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution_nvidia.sh --test
 ```
 
 ## 4. Run test for the integration of Java/Python for offloading Java code on GPU
 - If you have Intel (CPU/GPU) devices on your system, use the following script:
 ```bash
-${TORNADO_DOCKER_SCRIPT}/dynamic-intelligent-execution-intel.sh --test_integration
+${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution_intel.sh --test_integration
 ```
 
 - If you have NVIDIA GPU devices on your system, use the following script:
 ```bash
-${TORNADO_DOCKER_SCRIPT}/dynamic-intelligent-execution-nvidia.sh --test_integration
+${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution_nvidia.sh --test_integration
 ```
