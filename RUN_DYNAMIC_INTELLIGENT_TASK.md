@@ -4,7 +4,8 @@ To run the TANGO Dynamic Intelligent Execution you need to do the following:
 
 ## 1. Pull the latest docker image
 ```bash
-docker pull beehivelab/tornadovm-polyglot-graalpy-23.1.0-oneapi-intel-container:tango
+docker pull beehivelab/tornadovm-polyglot-graalpy-23.1.0-oneapi-intel-container:tango-v1.0.8
+docker pull beehivelab/tornadovm-polyglot-graalpy-23.1.0-nvidia-opencl-container:tango-v1.0.8
 ```
 
 ## 2. Clone the repository with the running scripts
