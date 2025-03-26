@@ -34,6 +34,7 @@ RUN curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu22
 
 # Install CUDA
 RUN apt-get install -y cuda-compiler-12-3
+# Builder of the image must copy the shared library to be available at build time. You can check this path: /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1
 COPY libnvidia-ml.so.1 /usr/lib/x86_64-linux-gnu/libnvidia-ml.so
 
 # Set environment variables
