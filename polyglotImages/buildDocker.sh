@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TAG_VERSION=tango-v1.0.11-dev
+TAG_VERSION=tango-v1.1.0
 
 function buildDockerImage() {
     IMAGE=$1
