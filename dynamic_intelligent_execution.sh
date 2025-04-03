@@ -11,13 +11,13 @@ if [ $# -eq 0 ]; then
 elif [ "$1" == "--test" ]; then
         echo "-----------------------------------------"
         echo "Testing the TANGO Dynamic Intelligent Execution..."
-	$TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot.sh tornado-test -V uk.ac.manchester.tornado.unittests.profiler.TestProfiler
+	$TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl-ptx.sh tornado-test -V uk.ac.manchester.tornado.unittests.profiler.TestProfiler
 elif [ "$1" == "--test_integration" ]; then
 	echo "Testing the integration of Java/Python for GPUs..."
-	$TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot.sh tornado --truffle python example/polyglot-examples/kmeans.py
+	$TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl-ptx.sh tornado --truffle python example/polyglot-examples/kmeans.py
 elif [ "$1" == "--devices" ]; then
         echo "Print identified devices in the system..."
-        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot.sh tornado uk.ac.manchester.tornado.drivers.TornadoDeviceQuery
+        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl-ptx.sh tornado uk.ac.manchester.tornado.drivers.TornadoDeviceQuery
 elif [ "$1" == "--help" ]; then
 	echo "------------------------------------"
         echo "Please run:"
@@ -28,5 +28,5 @@ elif [ "$1" == "--help" ]; then
         echo "  dynamic_intelligent_execution.sh --help                  to print help message."
 else
 	echo "Running the TANGO Dynamic Intelligent Execution..."
-        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot.sh tornado --truffle python $1
+        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl-ptx.sh tornado --truffle python $1
 fi
