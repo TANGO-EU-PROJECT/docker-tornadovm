@@ -1,28 +1,30 @@
-## Docker File for TornadoVM on NVIDIA GPUs using GraalVM 23.1.0 JDK21
-## OpenCL Backend only
-
-#FROM nvidia/opencl
-FROM ubuntu:22.04
+FROM intel/oneapi-basekit
 
 LABEL MAINTAINER Thanos Stratikopoulos <athanasios.stratikopoulos@manchester.ac.uk>
 
-SHELL ["/bin/bash", "-c"]
-
 RUN apt-get update -q && apt-get install -qy \
-	python3 build-essential vim git cmake maven openjdk-17-jdk python3-pip \
-	python3-requests python3-tqdm python3-urllib3 python3-wget python3-psutil \
-        wget clinfo ocl-icd-opencl-dev opencl-headers && rm -rf /var/lib/apt/lists/*
+        python3 build-essential vim git cmake maven openjdk-17-jdk python3-pip \
+        python3-requests python3-tqdm python3-urllib3 python3-wget python3-psutil \
+        wget && rm -rf /var/lib/apt/lists/*
 
-RUN python3 -m pip install wget
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-ENV PATH /usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH
-ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
+## OpenCL configuration
+RUN apt-get update && apt-get install -y clinfo opencl-headers
+RUN ln -s /usr/lib/x86_64-linux-gnu/libOpenCL.so.1 /usr/lib/x86_64-linux-gnu/libOpenCL.so
+ENV OpenCL_LIBRARY /usr/lib/x86_64-linux-gnu/libOpenCL.so.1
 
 # Enable Nvidia OpenCL
 RUN mkdir -p /etc/OpenCL/vendors && \
     echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+
+RUN java -version
+RUN javac -version
+
+ENV PATH /usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH
+ENV JAVA_HOME /usr/lib/jvm/java-17-openjdk-amd64
 
 # Install GraalPy
 WORKDIR /graalpy-dev/
@@ -40,7 +42,7 @@ RUN mx/mx --dy /compiler python-gvm
 
 ## Install TornadoVM 
 WORKDIR /tornado-dev/
-RUN git clone https://github.com/TANGO-EU-PROJECT/TornadoVM.git tornado && cd tornado && git checkout feat/kmeans/compute 
+RUN git clone https://github.com/TANGO-EU-PROJECT/TornadoVM.git tornado && cd tornado && git checkout feat/kmeans/compute
 WORKDIR /tornado-dev/tornado
 ENV CMAKE_ROOT=/usr
 RUN ./bin/tornadovm-installer --jdk graal-jdk-21 --backend opencl --mvn_single_threaded 
@@ -52,8 +54,7 @@ ENV PATH=/tornado-dev/tornado/bin/bin:$PATH
 ENV TORNADO_SDK=/tornado-dev/tornado/bin/sdk
 ENV TORNADO_ROOT=/tornado-dev/tornado 
 ENV GRAALPY_HOME=/graalpy-dev/graal/sdk/mxbuild/linux-amd64/GRAALVM_03DCD25EA1_JAVA21/graalvm-03dcd25ea1-java21-23.1.0-dev
+ENV DOCKER_FPGA_EMULATION=1 
 
-## Final Setup
 WORKDIR /data
 VOLUME ["/data"]
-EXPOSE 3000 

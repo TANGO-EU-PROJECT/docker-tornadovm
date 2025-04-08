@@ -36,7 +36,7 @@ RUN mx/mx --dy /compiler python-gvm
 
 ## Install TornadoVM 
 WORKDIR /tornado-dev/
-RUN git clone https://github.com/beehive-lab/TornadoVM.git tornado && cd tornado && git checkout master
+RUN git clone https://github.com/TANGO-EU-PROJECT/TornadoVM.git tornado && cd tornado && git checkout feat/kmeans/compute
 WORKDIR /tornado-dev/tornado
 ENV CMAKE_ROOT=/usr
 RUN ./bin/tornadovm-installer --jdk graal-jdk-21 --backend opencl --mvn_single_threaded 

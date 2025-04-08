@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 
-TAG_VERSION=1.0.11-dev
+TAG_VERSION=tango-v1.1.0
 
 function buildDockerImage() {
     IMAGE=$1
     FILE=$2
     DOCKER_BUILDKIT=1 docker build --progress=plain --no-cache -t $IMAGE -f $FILE .
     docker tag $IMAGE beehivelab/$IMAGE:$TAG_VERSION
-    docker tag $IMAGE beehivelab/$IMAGE:latest
 }
 
 
 if [[ "$1" == "--python" ]]; then
     docker volume create data
+    buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-opencl-cuda-container" "./polyglot-graalpy/Dockerfile.opencl.ptx.graalpy.jdk21"
+    buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-opencl-container" "./polyglot-graalpy/Dockerfile.opencl.graalpy.jdk21"
     buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-oneapi-intel-container" "./polyglot-graalpy/Dockerfile.intel.oneapi.graalpy.jdk21"
     buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-nvidia-opencl-container" "./polyglot-graalpy/Dockerfile.nvidia.opencl.graalpy.jdk21"
 elif [[ "$1" == "--js" ]]; then
