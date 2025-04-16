@@ -24,8 +24,7 @@ import time
 histogram = java.type("uk.ac.manchester.tornado.examples.kernelcontext.reductions.Histogram")
 
 # Set numPoints, numOfBins
-inputData = [2 for _ in range(256)]
-#inputData = histogram.createDataPoints(2048, 4) #1048576
+inputData = [2 for _ in range(67108864)]
 histogram.setBlockSize(256)
 histogram.setInputs(inputData, 4)
 resultJava = histogram.runWithJava()
