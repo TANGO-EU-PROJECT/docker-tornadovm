@@ -3,23 +3,43 @@ FROM intel/oneapi-basekit
 LABEL MAINTAINER Thanos Stratikopoulos <athanasios.stratikopoulos@manchester.ac.uk>
 
 RUN apt-get update -q && apt-get install -qy \
-        python3 build-essential vim git openjdk-17-jdk python3-pip \
+        python3 build-essential vim git cmake maven openjdk-17-jdk python3-pip \
         python3-requests python3-tqdm python3-urllib3 python3-wget python3-psutil \
-        python3-venv
- 
-RUN ln -s /usr/bin/python3 /usr/bin/python
-RUN python3 -m venv /opt/venv \
- && /opt/venv/bin/pip install --upgrade pip \
- && /opt/venv/bin/pip install wget \
- && /opt/venv/bin/pip install rich \
- && /opt/venv/bin/pip install packaging
+        wget && rm -rf /var/lib/apt/lists/*
 
-ENV PATH="/opt/venv/bin:$PATH"
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 ## OpenCL configuration
-RUN apt-get update && apt-get install -y opencl-headers
+RUN apt-get update && apt-get install -y clinfo opencl-headers
 RUN ln -s /usr/lib/x86_64-linux-gnu/libOpenCL.so.1 /usr/lib/x86_64-linux-gnu/libOpenCL.so
 ENV OpenCL_LIBRARY /usr/lib/x86_64-linux-gnu/libOpenCL.so.1
+
+# Enable Nvidia OpenCL
+RUN mkdir -p /etc/OpenCL/vendors && \
+    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+
+# Install dependency packages for CUDA installation
+RUN apt-get update && apt-get install -y \
+    gnupg \
+    ca-certificates \
+    curl
+
+# Add NVIDIA package repositories
+RUN curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb -o cuda-keyring.deb && \
+    dpkg -i cuda-keyring.deb && \
+    rm cuda-keyring.deb && \
+    apt-get update
+
+# Install CUDA
+RUN apt-get install -y cuda-compiler-12-3
+# Builder of the image must copy the shared library to be available at build time. You can check this path: /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1
+COPY libnvidia-ml.so.1 /usr/lib/x86_64-linux-gnu/libnvidia-ml.so
+
+# Set environment variables
+ENV PATH=/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 
 RUN java -version
 RUN javac -version
@@ -46,8 +66,7 @@ WORKDIR /tornado-dev/
 RUN git clone https://github.com/TANGO-EU-PROJECT/TornadoVM.git tornado && cd tornado && git checkout feat/kmeans/compute
 WORKDIR /tornado-dev/tornado
 ENV CMAKE_ROOT=/usr
-ENV JAVA_HOME=
-RUN ./bin/tornadovm-installer --jdk graal-jdk-21 --backend opencl --auto-deps --mvn_single_threaded 
+RUN ./bin/tornadovm-installer --jdk graal-jdk-21 --backend ptx,opencl --mvn_single_threaded 
 SHELL ["/bin/bash", "-c", "source /tornado-dev/tornado/setvars.sh"]
 
 ## ENV-Variables Taken from the SOURCE.sh
