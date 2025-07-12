@@ -5,9 +5,14 @@ LABEL MAINTAINER Thanos Stratikopoulos <athanasios.stratikopoulos@manchester.ac.
 RUN apt-get update -q && apt-get install -qy \
         python3 build-essential vim git cmake maven openjdk-17-jdk python3-pip \
         python3-requests python3-tqdm python3-urllib3 python3-wget python3-psutil \
-        wget && rm -rf /var/lib/apt/lists/*
+        wget python3-venv && rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN python3 -m venv /opt/venv \
+ && /opt/venv/bin/pip install --upgrade pip \
+ && /opt/venv/bin/pip install wget \
+ && /opt/venv/bin/pip install rich \
+ && /opt/venv/bin/pip install packaging
 
 ## OpenCL configuration
 RUN apt-get update && apt-get install -y clinfo opencl-headers
@@ -38,7 +43,7 @@ RUN apt-get install -y cuda-compiler-12-3
 COPY libnvidia-ml.so.1 /usr/lib/x86_64-linux-gnu/libnvidia-ml.so
 
 # Set environment variables
-ENV PATH=/usr/local/cuda/bin:${PATH}
+ENV PATH="/opt/venv/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin:/usr/local/cuda/bin:${PATH}"
 ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH}
 
 RUN java -version
@@ -61,12 +66,15 @@ WORKDIR /graalpy-dev/graalpython/
 ENV JAVA_HOME=/root/.mx/jdks/labsjdk-ce-21.0.1-jvmci-23.1-b22
 RUN mx/mx --dy /compiler python-gvm
 
+RUN apt-get remove maven cmake -qy
+
 ## Install TornadoVM 
 WORKDIR /tornado-dev/
 RUN git clone https://github.com/TANGO-EU-PROJECT/TornadoVM.git tornado && cd tornado && git checkout feat/kmeans/compute
 WORKDIR /tornado-dev/tornado
+ENV JAVA_HOME=
 ENV CMAKE_ROOT=/usr
-RUN ./bin/tornadovm-installer --jdk graal-jdk-21 --backend ptx,opencl --mvn_single_threaded 
+RUN ./bin/tornadovm-installer --jdk graal-jdk-21 --backend ptx,opencl --auto-deps --mvn_single_threaded 
 SHELL ["/bin/bash", "-c", "source /tornado-dev/tornado/setvars.sh"]
 
 ## ENV-Variables Taken from the SOURCE.sh

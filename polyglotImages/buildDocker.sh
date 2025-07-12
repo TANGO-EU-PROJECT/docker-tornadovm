@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TAG_VERSION=tango-v1.1.0
+TAG_VERSION=tango-v1.1.1
 
 function buildDockerImage() {
     IMAGE=$1
@@ -14,8 +14,8 @@ if [[ "$1" == "--python" ]]; then
     docker volume create data
     buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-opencl-cuda-container" "./polyglot-graalpy/Dockerfile.opencl.ptx.graalpy.jdk21"
     buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-opencl-container" "./polyglot-graalpy/Dockerfile.opencl.graalpy.jdk21"
-    buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-oneapi-intel-container" "./polyglot-graalpy/Dockerfile.intel.oneapi.graalpy.jdk21"
-    buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-nvidia-opencl-container" "./polyglot-graalpy/Dockerfile.nvidia.opencl.graalpy.jdk21"
+    #buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-oneapi-intel-container" "./polyglot-graalpy/Dockerfile.intel.oneapi.graalpy.jdk21"
+    #buildDockerImage "tornadovm-polyglot-graalpy-23.1.0-nvidia-opencl-container" "./polyglot-graalpy/Dockerfile.nvidia.opencl.graalpy.jdk21"
 elif [[ "$1" == "--js" ]]; then
     docker volume create data
     buildDockerImage "tornadovm-polyglot-graaljs-23.1.0-nvidia-opencl-container" "./polyglot-graaljs/Dockerfile.nvidia.opencl.graaljs.jdk21"
