@@ -24,23 +24,21 @@ export TORNADO_INFERENCE_DIR="<path>/dynamic-intelligent-scheduler"
 ```
 
 ## 3. Run TornadoVM profiler unit-tests
-- If you have Intel (CPU/GPU) devices on your system, use the following script:
+- If you have OpenCL (CPU/GPU) devices on your system, use the following script:
 ```bash
-${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution_intel.sh --test
-```
-
-- If you have NVIDIA GPU devices on your system, use the following script:
-```bash
-${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution_nvidia.sh --test
+${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution.sh --test
 ```
 
 ## 4. Run test for the integration of Java/Python for offloading Java code on GPU
-- If you have Intel (CPU/GPU) devices on your system, use the following script:
+- If you have OpenCL Intel (CPU/GPU) devices on your system, use the following script:
 ```bash
-${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution_intel.sh --test_integration
+${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution.sh --test_integration
 ```
 
-- If you have NVIDIA GPU devices on your system, use the following script:
+## 5. Run a Python program and accelerate a computation using the TornadoVM API automatically on the most energy efficient device:
+
+For example, run a [histogram.py](https://github.com/TANGO-EU-PROJECT/docker-tornadovm/blob/test/cicd/example/polyglot-examples/histogram.py) program that launches a [kernel](https://github.com/TANGO-EU-PROJECT/TornadoVM/blob/ab2d3fee20cdd80a95c35cd1e10695be1da28699/tornado-examples/src/main/java/uk/ac/manchester/tornado/examples/kernelcontext/reductions/Histogram.java#L86C5-L93C6) expressed via the TornadoVM API.
 ```bash
-${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution_nvidia.sh --test_integration
+${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution.sh histogram.py
+
 ```

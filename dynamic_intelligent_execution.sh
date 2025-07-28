@@ -6,27 +6,32 @@ if [ $# -eq 0 ]; then
         echo "  dynamic_intelligent_execution.sh --devices               to print identified devices."
         echo "  dynamic_intelligent_execution.sh --test			for running unit-tests."
         echo "  dynamic_intelligent_execution.sh --test_integration	for running integration test."
-	echo "  dynamic_intelligent_execution.sh <python>		to run a Python program with polyglot runtime on GPU."
+	echo "  dynamic_intelligent_execution.sh --tornado <python>      to run a Python program with polyglot runtime on GPU."
+        echo "  dynamic_intelligent_execution.sh <python>                to run a Python program with dynamic intelligent execution on CPU/GPU."
         echo "  dynamic_intelligent_execution.sh --help			to print help message."
 elif [ "$1" == "--test" ]; then
         echo "-----------------------------------------"
         echo "Testing the TANGO Dynamic Intelligent Execution..."
-	$TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl-ptx.sh tornado-test -V uk.ac.manchester.tornado.unittests.profiler.TestProfiler
+	$TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl.sh tornado-test -V uk.ac.manchester.tornado.unittests.profiler.TestProfiler
 elif [ "$1" == "--test_integration" ]; then
 	echo "Testing the integration of Java/Python for GPUs..."
-	$TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl-ptx.sh tornado --truffle python example/polyglot-examples/kmeans.py
+	$TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl.sh tornado --truffle python example/polyglot-examples/kmeans.py
 elif [ "$1" == "--devices" ]; then
         echo "Print identified devices in the system..."
-        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl-ptx.sh tornado uk.ac.manchester.tornado.drivers.TornadoDeviceQuery
+        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl.sh tornado uk.ac.manchester.tornado.drivers.TornadoDeviceQuery
 elif [ "$1" == "--help" ]; then
 	echo "------------------------------------"
         echo "Please run:"
         echo "  dynamic_intelligent_execution.sh --devices               to print identified devices."
         echo "  dynamic_intelligent_execution.sh --test                  for running unit-tests."
         echo "  dynamic_intelligent_execution.sh --test_integration      for running integration test."
-        echo "  dynamic_intelligent_execution.sh <python>                to run a Python program with polyglot runtime on GPU."
+        echo "  dynamic_intelligent_execution.sh --tornado <python>      to run a Python program with polyglot runtime on GPU."
+        echo "  dynamic_intelligent_execution.sh <python>                to run a Python program with dynamic intelligent execution on CPU/GPU."
         echo "  dynamic_intelligent_execution.sh --help                  to print help message."
+elif [ "$1" == "--tornado" ]; then
+	echo "Running the python program on default device with TornadoVM..."
+        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl.sh tornado --truffle python $2
 else
 	echo "Running the TANGO Dynamic Intelligent Execution..."
-        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl-ptx.sh tornado --truffle python $1
+        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl.sh ./tornado_inference_runner --truffle python $1 --mode energy
 fi
