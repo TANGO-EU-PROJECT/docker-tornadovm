@@ -14,6 +14,13 @@ git clone https://github.com/TANGO-EU-PROJECT/docker-tornadovm
 cd docker-tornadovm
 git checkout test/cicd
 export TORNADO_DOCKER_SCRIPT="<path>/docker-tornadovm"
+export TORNADO_INFERENCE_DIR="<path>/dynamic-intelligent-scheduler"
+```
+
+```bash
+git clone 
+cd 
+export TORNADO_INFERENCE_DIR="<path>/dynamic-intelligent-scheduler"
 ```
 
 ## 3. Run TornadoVM profiler unit-tests
