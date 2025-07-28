@@ -37,7 +37,7 @@ ${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution.sh --test_integration
 
 ## 5. Run a Python program and accelerate a computation using the TornadoVM API automatically on the most energy efficient device:
 
-For example, run a [histogram.py](https://github.com/TANGO-EU-PROJECT/docker-tornadovm/blob/test/cicd/example/polyglot-examples/histogram.py) program that launches a [kernel](https://github.com/TANGO-EU-PROJECT/TornadoVM/blob/ab2d3fee20cdd80a95c35cd1e10695be1da28699/tornado-examples/src/main/java/uk/ac/manchester/tornado/examples/kernelcontext/reductions/Histogram.java#L86C5-L93C6) expressed via the TornadoVM API.
+For example, run a [histogram.py](https://github.com/TANGO-EU-PROJECT/docker-tornadovm/blob/tango-v1.1.1/final/example/polyglot-examples/histogram.py) program that launches a [kernel](https://github.com/TANGO-EU-PROJECT/TornadoVM/blob/ab2d3fee20cdd80a95c35cd1e10695be1da28699/tornado-examples/src/main/java/uk/ac/manchester/tornado/examples/kernelcontext/reductions/Histogram.java#L86C5-L93C6) expressed via the TornadoVM API.
 ```bash
 ${TORNADO_DOCKER_SCRIPT}/dynamic_intelligent_execution.sh histogram.py
 
