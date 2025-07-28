@@ -17,7 +17,11 @@ RUN python3 -m venv /opt/venv \
  && /opt/venv/bin/pip install --upgrade pip \
  && /opt/venv/bin/pip install wget \
  && /opt/venv/bin/pip install rich \
- && /opt/venv/bin/pip install packaging
+ && /opt/venv/bin/pip install packaging \
+ && /opt/venv/bin/pip install pandas \
+ && /opt/venv/bin/pip install numpy \
+ && /opt/venv/bin/pip install scikit-learn==1.5.1 \
+ && /opt/venv/bin/pip install joblib
 
 ENV PATH="/opt/venv/bin:/usr/lib/jvm/java-17-openjdk-amd64/bin:$PATH"
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
@@ -46,7 +50,7 @@ RUN apt-get remove maven cmake -qy
 
 ## Install TornadoVM 
 WORKDIR /tornado-dev/
-RUN git clone https://github.com/TANGO-EU-PROJECT/TornadoVM.git tornado && cd tornado && git checkout feat/kmeans/compute 
+RUN git clone https://github.com/TANGO-EU-PROJECT/TornadoVM.git tornado && cd tornado && git checkout tango-v1.1.1/final 
 WORKDIR /tornado-dev/tornado
 ENV CMAKE_ROOT=/usr
 ENV JAVA_HOME=
