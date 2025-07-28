@@ -28,5 +28,5 @@ elif [ "$1" == "--help" ]; then
         echo "  dynamic_intelligent_execution_nvidia.sh --help                  to print help message."
 else
 	echo "Running the TANGO Dynamic Intelligent Execution..."
-        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-nvidia.sh tornado --truffle python $1 --mode energy
+        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-nvidia.sh tornado --truffle python $1
 fi
