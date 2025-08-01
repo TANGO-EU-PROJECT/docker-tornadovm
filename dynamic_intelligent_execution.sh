@@ -33,5 +33,5 @@ elif [ "$1" == "--tornado" ]; then
         $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl.sh tornado --truffle python $2
 else
 	echo "Running the TANGO Dynamic Intelligent Execution..."
-        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl.sh ./tornado_inference_runner --truffle python $1 --mode energy
+        $TORNADO_DOCKER_SCRIPT/polyglotImages/polyglot-graalpy/tornadovm-polyglot-opencl.sh tornado_inference_runner --truffle python $1 --mode energy --model-dir /tornado-dev/dynamic-intelligent-scheduler/ML 
 fi
